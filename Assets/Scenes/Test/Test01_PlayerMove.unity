@@ -769,6 +769,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &1465003137 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 145090378475089738, guid: dd80c4f113935b5469c69998f6fb08e8, type: 3}
+  m_PrefabInstance: {fileID: 4828109114328429281}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1730771048
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,7 +917,7 @@ GameObject:
   - component: {fileID: 1998800061}
   m_Layer: 7
   m_Name: Vaine
-  m_TagString: Untagged
+  m_TagString: Vaine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1171,6 +1176,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5317530927559196282, guid: dd80c4f113935b5469c69998f6fb08e8, type: 3}
+      propertyPath: rb2
+      value: 
+      objectReference: {fileID: 1465003137}
     - target: {fileID: 7436678387684183466, guid: dd80c4f113935b5469c69998f6fb08e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.29

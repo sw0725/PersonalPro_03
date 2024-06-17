@@ -15,13 +15,13 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "UpDown",
-                    "type": "Value",
-                    "id": "56293a7d-6aba-4ebe-a47a-cbbd75bba5a3",
-                    "expectedControlType": "Vector2",
+                    "name": "Run",
+                    "type": "Button",
+                    "id": "a8f70160-46e4-4c37-b4e8-99737fb8e237",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Jump",
@@ -33,9 +33,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Run",
+                    "name": "UpDown",
+                    "type": "Value",
+                    "id": "56293a7d-6aba-4ebe-a47a-cbbd75bba5a3",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Vaine",
                     "type": "Button",
-                    "id": "a8f70160-46e4-4c37-b4e8-99737fb8e237",
+                    "id": "a0371abf-898f-46e9-9fb5-183204ff59d1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -96,12 +105,23 @@
                 },
                 {
                     "name": "",
-                    "id": "ed91b420-6a9f-4e4d-91e1-dcdf1f520e02",
-                    "path": "<Mouse>/leftButton",
+                    "id": "502eccf2-93be-4c02-9963-d91ea5d66ced",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b544464-1037-4893-b01b-e3804cf54918",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vaine",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -118,12 +138,12 @@
                 },
                 {
                     "name": "",
-                    "id": "502eccf2-93be-4c02-9963-d91ea5d66ced",
-                    "path": "<Keyboard>/space",
+                    "id": "ed91b420-6a9f-4e4d-91e1-dcdf1f520e02",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
