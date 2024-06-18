@@ -117,23 +117,30 @@ public class Player : MonoBehaviour                             //파밍스테이지에
     {
         if (IsAlive)
         {           //이건 y밸로시티0으로 하고 가속 촤대 지정해서 막야야 할듯 +=쓰자
-            rb.velocity = new Vector2(inputDir.x * currentSpeed, rb.velocity.y);        //MovePosition은 순간이동이라 중력 적용량이 증발함
-            //if (State != PlayerState.Vaine)
-            //{
-            //    rb.velocity += new Vector2(inputDir.x * currentSpeed, 0);
-            //    if (rb.velocity.x > currentSpeed) 
-            //    {
-            //        rb.velocity = new Vector2 (currentSpeed, rb.velocity.y);
-            //    }
-            //    else if (rb.velocity.x < -currentSpeed)
-            //    {
-            //        rb.velocity = new Vector2(-currentSpeed, rb.velocity.y);
-            //    }
-            //}
-            //else 
-            //{
-            //    rb.velocity = new Vector2(rb.velocity.x, inputDir.y * currentSpeed); 
-            //}
+            if (State != PlayerState.Vaine)
+            {
+                rb.velocity += new Vector2(inputDir.x * currentSpeed, 0);
+                if (rb.velocity.x > currentSpeed)
+                {
+                    rb.velocity = new Vector2(currentSpeed, rb.velocity.y);
+                }
+                else if (rb.velocity.x < -currentSpeed)
+                {
+                    rb.velocity = new Vector2(-currentSpeed, rb.velocity.y);
+                }
+            }
+            else
+            {
+                rb.velocity += new Vector2(0, inputDir.y * currentSpeed);
+                if (rb.velocity.y > currentSpeed)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, currentSpeed);
+                }
+                else if (rb.velocity.y < -currentSpeed)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, -currentSpeed);
+                }
+            }
         }
 
         if (isJumping && jumpKey && jumpTimer < jumpLimit)
@@ -171,7 +178,6 @@ public class Player : MonoBehaviour                             //파밍스테이지에
         RaycastHit2D hit2D = Physics2D.Raycast(rb.position, Vector2.down, GroundRayRange, LayerMask.GetMask("Ground"));
         if (hit2D.collider != null)
         {
-            State = PlayerState.Move;
             isJumping = false;
             if (jumpKey)
             {
@@ -186,6 +192,9 @@ public class Player : MonoBehaviour                             //파밍스테이지에
         {
             isJumping = false;
             jumpDir = hit2D.transform.position - transform.position;
+            jumpDir.y = 0;
+            jumpDir.Normalize();
+            Debug.Log(jumpDir);
             State = PlayerState.Wall;
         }
     }
@@ -209,6 +218,7 @@ public class Player : MonoBehaviour                             //파밍스테이지에
         if (collision.CompareTag("Vaine")) 
         {
             isVaineAble = false;
+            State = PlayerState.Move;
         }
     }
 
@@ -293,6 +303,7 @@ public class Player : MonoBehaviour                             //파밍스테이지에
             if (context.canceled)
             {
                 inputDir = Vector2.zero;
+                rb.velocity = new Vector2(rb.velocity.normalized.x * 0.001f, rb.velocity.y);    //미끄러짐 방지
             }
             else
             {
@@ -316,7 +327,7 @@ public class Player : MonoBehaviour                             //파밍스테이지에
             }
         }
     }
-    private void OnJump(InputAction.CallbackContext context)    //Vaine, Wall시에 다르게 점프
+    private void OnJump(InputAction.CallbackContext context)    //Vaine, Wall시에 다르게 점프, 무기들었을때 점프 봉인
     {
         if (State == PlayerState.Vaine || State == PlayerState.Wall)
         {
@@ -363,7 +374,8 @@ public class Player : MonoBehaviour                             //파밍스테이지에
         jumpTimer = 0;
 
         rb.velocity = Vector2.zero;         //벽위치의 반대로 점프
-        rb.AddForce(jumpPower * Vector2.up * -dir, ForceMode2D.Impulse);
+        rb.AddForce(jumpPower * -dir, ForceMode2D.Impulse);
+        Debug.Log($"{jumpPower * -dir} => {rb.velocity}");
     }
     private void OnVaine(InputAction.CallbackContext context)
     {
@@ -379,6 +391,7 @@ public class Player : MonoBehaviour                             //파밍스테이지에
             if (context.canceled)
             {
                 inputDir = Vector2.zero;
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.normalized.y * 0.001f);    //작동하나 벽점프 안됨
             }
             else
             {
