@@ -29,10 +29,18 @@ public class Player : MonoBehaviour
     float hp;
     public bool IsAlive => hp > 0.1;
 
+    //공격=============================================
+
+    WeaponBase[] weapons;
+    WeaponBase currentWeapon;
+
+    bool isAttackMode = false;
+
     //액션=============================================
 
     public Action onDie;
     public Action OnLifeChange;
+    public Action<WeaponBase> onGunChange;
 
     //기타=============================================
 
@@ -44,6 +52,9 @@ public class Player : MonoBehaviour
         playerMove = GetComponent<PlayerMove>();
         actions = new PlayerInputAction();
 
+        Transform c = transform.GetChild(1);
+        weapons = c.GetComponentsInChildren<WeaponBase>();
+
         hp = maxHp;
     }
 
@@ -52,6 +63,13 @@ public class Player : MonoBehaviour
         actions.Player.Enable();
         actions.Player.Attack.performed += OnAttack;
         actions.Player.Reload.performed += OnReload;
+
+        actions.UI.Enable();
+        actions.UI.Weapon1.performed += OnWeapon1;
+        actions.UI.Weapon2.performed += OnWeapon2;
+        actions.UI.Weapon3.performed += OnWeapon3;
+        actions.UI.Weapon4.performed += OnWeapon4;
+        actions.UI.Menu.performed += OnMenu;
     }
 
     private void OnDisable()
@@ -59,6 +77,13 @@ public class Player : MonoBehaviour
         actions.Player.Attack.performed -= OnAttack;
         actions.Player.Reload.performed -= OnReload;
         actions.Player.Disable();
+
+        actions.UI.Weapon1.performed -= OnWeapon1;
+        actions.UI.Weapon2.performed -= OnWeapon2;
+        actions.UI.Weapon3.performed -= OnWeapon3;
+        actions.UI.Weapon4.performed -= OnWeapon4;
+        actions.UI.Menu.performed -= OnMenu;
+        actions.UI.Disable();
     }
 
     void Die()
@@ -72,12 +97,36 @@ public class Player : MonoBehaviour
     {
         if (playerMove.State == PlayerMoveState.Shoot)
         {
+
         }
     }
     private void OnReload(InputAction.CallbackContext context)
     {
         if (playerMove.State == PlayerMoveState.Shoot)
         {
+
         }
+    }
+
+    private void OnMenu(InputAction.CallbackContext context)
+    {
+    }
+
+    //무기변환==============================================
+
+    private void OnWeapon4(InputAction.CallbackContext context)
+    {
+    }
+
+    private void OnWeapon3(InputAction.CallbackContext context)
+    {
+    }
+
+    private void OnWeapon2(InputAction.CallbackContext context)
+    {
+    }
+
+    private void OnWeapon1(InputAction.CallbackContext context)
+    {
     }
 }
