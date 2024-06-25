@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public enum WeaponType : byte
 {
-    bat = 0,
-    Revolver,
+    Bat = 0,
+    Pistol,
     ShotGun,
     AssaultRifle
 }
@@ -20,14 +21,8 @@ public class WeaponBase : MonoBehaviour
     public float fireCoolTime;
     public float spread;
     public float recoil;        //화면 흔들림 정도
+    public float reloadDuration = 1.0f;
 
-    public Action<int> onBulletCountChange;
-    public Action NoAmmo;
-    public Action<float> onFire;
-
-    protected Transform firePos;    //레이 기준점 웨폰스 위치
-    Vector2 targetDir;              //커서 위치
-    protected bool canFire = true;
     protected int BulletCount 
     {
         get => bulletCount;
@@ -40,24 +35,33 @@ public class WeaponBase : MonoBehaviour
 
                 if(bulletCount < 1) 
                 {
-                    NoAmmo?.Invoke();
+                    Reload();
                 }
             }
         }
     }
     int bulletCount;
 
+    protected bool canFire = true;
+    bool isReloading = false;
+
+    public Action<int> onBulletCountChange;
+    public Action<float> onFire;
+
+    protected Transform shoulder;
+    Vector2 targetDir;              //커서-중심 벡터
+
     protected virtual void Awake()
     {
-        firePos = transform.parent;
+        shoulder = transform.parent;
         bulletCount = clipSize;
     }
 
     public void Fire(Vector2 targetPos) 
     {
-        targetDir = (targetPos - (Vector2)firePos.position).normalized;
+        targetDir = (targetPos - (Vector2)transform.position).normalized;
         Quaternion dir = Quaternion.LookRotation(targetDir, Vector2.up);
-        firePos.rotation = dir;
+        shoulder.rotation = dir;
         if(canFire && BulletCount > 0) 
         {
             FireProcess();
@@ -79,14 +83,15 @@ public class WeaponBase : MonoBehaviour
 
     protected void HitProcess ()
     {
-        Ray ray = new(firePos.position, GetFireDirection());
-    }
-
-    protected Vector2 GetFireDirection()   //플레이어에서 전달 커서의 위치
-    {
-        Vector2 result = targetDir;
-        result = Quaternion.AngleAxis(Random.Range(-spread, spread), transform.right) * result;
-        return result;
+        RaycastHit2D hit2D = Physics2D.Raycast(transform.position, GetFireDirection(), range, LayerMask.GetMask("Enemy"));
+        if(hit2D.collider != null) 
+        {
+            EnemyBase target = hit2D.collider.GetComponent<EnemyBase>();
+            if(target != null) 
+            {
+                target.Attacked(damege);
+            }
+        }
     }
 
     protected void FireRecoil() 
@@ -94,10 +99,36 @@ public class WeaponBase : MonoBehaviour
         onFire?.Invoke(recoil);
     }
 
+    public void Reload()    //앵두 납치시 사용불가
+    {
+        if (!isReloading)
+        {
+            StopAllCoroutines();    //FireProcess 실행시키는 코루틴으로 isFireReady가 true되는것 방지
+            isReloading = true;
+            canFire = false;
+            StartCoroutine(Reloading());
+        }
+    }
+
+    protected virtual IEnumerator Reloading()   //총마다 찾을 총알 다름
+    {
+        yield return new WaitForSeconds(reloadDuration);
+        canFire = true;
+        BulletCount = clipSize;//총알 빼기
+        isReloading = false;
+    }
+
+    protected Vector2 GetFireDirection()
+    {
+        Vector2 result = targetDir;
+        result = Quaternion.Euler(0, 0, Random.Range(-spread, spread)) * result;
+        return result;
+    }
+
     public void Equip() 
     {
         onBulletCountChange?.Invoke(bulletCount);
-        if (!canFire) 
+        if (!canFire && BulletCount > 0) 
         {
             StartCoroutine(FireReady());
         }
@@ -107,4 +138,18 @@ public class WeaponBase : MonoBehaviour
     {
         StopAllCoroutines();
     }
+
+
+#if UNITY_EDITOR
+
+    private void OnDrawGizmos()
+    {
+        Handles.color = Color.yellow;
+        Vector2 resulta = Quaternion.Euler(0, 0, -spread) * Vector2.left;
+        Vector2 resultb = Quaternion.Euler(0, 0, spread) * Vector2.left;
+        Handles.DrawLine((Vector2)transform.position, (Vector2)transform.position + resulta * range);
+        Handles.DrawLine((Vector2)transform.position, (Vector2)transform.position + resultb * range);
+    }
+
+#endif
 }

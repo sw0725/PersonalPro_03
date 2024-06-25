@@ -188,6 +188,7 @@ Transform:
   - {fileID: 8116491813359144684}
   - {fileID: 5616670735749748688}
   - {fileID: 6337579181407585554}
+  - {fileID: 5807145172102164941}
   m_Father: {fileID: 7436678387684183466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3383694285726185713
@@ -208,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4722894632945912675
 Transform:
   m_ObjectHideFlags: 0
@@ -294,6 +295,7 @@ MonoBehaviour:
   fireCoolTime: 0
   spread: 0
   recoil: 0
+  firePosDebug: {fileID: 3873580677706040738}
 --- !u!95 &6467282103728651195
 Animator:
   serializedVersion: 5
@@ -569,6 +571,58 @@ MonoBehaviour:
   fireCoolTime: 0
   spread: 0
   recoil: 0
+  firePosDebug: {fileID: 3873580677706040738}
+--- !u!1 &5578872889730873369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5807145172102164941}
+  - component: {fileID: 1917630587130453601}
+  m_Layer: 6
+  m_Name: Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5807145172102164941
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578872889730873369}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3873580677706040738}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1917630587130453601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578872889730873369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5307d75ad3afae45bf6dd297a7dc63f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 30
+  clipSize: 0
+  damege: 0
+  fireCoolTime: 0
+  spread: 10
+  recoil: 0
+  firePosDebug: {fileID: 3873580677706040738}
 --- !u!1 &6783638319895987103
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,6 +726,7 @@ MonoBehaviour:
   fireCoolTime: 0
   spread: 0
   recoil: 0
+  firePosDebug: {fileID: 3873580677706040738}
 --- !u!1 &8916839473871256133
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,3 +830,4 @@ MonoBehaviour:
   fireCoolTime: 0
   spread: 0
   recoil: 0
+  firePosDebug: {fileID: 3873580677706040738}

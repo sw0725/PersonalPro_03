@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
     {
     }
 
-    //무기변환==============================================
+    //무기변환==============================================앵두 납치시 변환 불가
 
     private void OnWeapon4(InputAction.CallbackContext context)
     {
