@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
 
     PlayerInputAction actions;
     PlayerMove playerMove;
+    Inventory inven;
 
     private void Awake()
     {
@@ -57,6 +58,63 @@ public class Player : MonoBehaviour
 
         hp = maxHp;
     }
+
+    private void Start()
+    {
+        inven = Inventory.Instance;
+    }
+
+    void Die()
+    {
+        onDie?.Invoke();
+    }
+
+    private void OnAttack(InputAction.CallbackContext context)      //무기 들었을때는 달리기 봉인
+    {
+        if (playerMove.State == PlayerMoveState.Shoot)
+        {
+
+        }
+    }
+    private void OnReload(InputAction.CallbackContext context)
+    {
+        if (playerMove.State == PlayerMoveState.Shoot)
+        {
+
+        }
+    }
+
+    private void OnMenu(InputAction.CallbackContext context)
+    {
+    }
+
+    //무기변환==============================================앵두 납치시 변환 불가
+
+    private void OnWeapon4(InputAction.CallbackContext context)
+    {
+        if(!isAttackMode) 
+        {
+            //playerMove.State = PlayerMoveState.Shoot;
+        }
+        else 
+        {
+                
+        }
+    }
+
+    private void OnWeapon3(InputAction.CallbackContext context)
+    {
+    }
+
+    private void OnWeapon2(InputAction.CallbackContext context)
+    {
+    }
+
+    private void OnWeapon1(InputAction.CallbackContext context)
+    {
+    }
+
+    //입력연결==============================================
 
     private void OnEnable()
     {
@@ -84,49 +142,5 @@ public class Player : MonoBehaviour
         actions.UI.Weapon4.performed -= OnWeapon4;
         actions.UI.Menu.performed -= OnMenu;
         actions.UI.Disable();
-    }
-
-    void Die()
-    {
-        onDie?.Invoke();
-    }
-
-
-
-    private void OnAttack(InputAction.CallbackContext context)      //무기 들었을때는 달리기 봉인
-    {
-        if (playerMove.State == PlayerMoveState.Shoot)
-        {
-
-        }
-    }
-    private void OnReload(InputAction.CallbackContext context)
-    {
-        if (playerMove.State == PlayerMoveState.Shoot)
-        {
-
-        }
-    }
-
-    private void OnMenu(InputAction.CallbackContext context)
-    {
-    }
-
-    //무기변환==============================================앵두 납치시 변환 불가
-
-    private void OnWeapon4(InputAction.CallbackContext context)
-    {
-    }
-
-    private void OnWeapon3(InputAction.CallbackContext context)
-    {
-    }
-
-    private void OnWeapon2(InputAction.CallbackContext context)
-    {
-    }
-
-    private void OnWeapon1(InputAction.CallbackContext context)
-    {
     }
 }

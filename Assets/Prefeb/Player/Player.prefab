@@ -188,7 +188,6 @@ Transform:
   - {fileID: 8116491813359144684}
   - {fileID: 5616670735749748688}
   - {fileID: 6337579181407585554}
-  - {fileID: 5807145172102164941}
   m_Father: {fileID: 7436678387684183466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3383694285726185713
@@ -209,7 +208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4722894632945912675
 Transform:
   m_ObjectHideFlags: 0
@@ -219,8 +218,8 @@ Transform:
   m_GameObject: {fileID: 3383694285726185713}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 0.4}
+  m_LocalPosition: {x: -0.4, y: 0.05, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.2, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3873580677706040738}
@@ -289,13 +288,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f43cb841798615b438e069a85f1ac297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
-  clipSize: 0
-  damege: 0
-  fireCoolTime: 0
+  range: 0.5
+  clipSize: 100
+  damege: 30
+  fireCoolTime: 0.1
   spread: 0
-  recoil: 0
-  firePosDebug: {fileID: 3873580677706040738}
+  recoil: 1
+  reloadDuration: 0
+  weaponType: 0
 --- !u!95 &6467282103728651195
 Animator:
   serializedVersion: 5
@@ -565,64 +565,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385004273de949640b005528af76a4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
-  clipSize: 0
-  damege: 0
-  fireCoolTime: 0
-  spread: 0
-  recoil: 0
-  firePosDebug: {fileID: 3873580677706040738}
---- !u!1 &5578872889730873369
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5807145172102164941}
-  - component: {fileID: 1917630587130453601}
-  m_Layer: 6
-  m_Name: Test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5807145172102164941
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5578872889730873369}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3873580677706040738}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1917630587130453601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5578872889730873369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5307d75ad3afae45bf6dd297a7dc63f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 30
-  clipSize: 0
-  damege: 0
-  fireCoolTime: 0
+  range: 2
+  clipSize: 4
+  damege: 10
+  fireCoolTime: 1
   spread: 10
-  recoil: 0
-  firePosDebug: {fileID: 3873580677706040738}
+  recoil: 4
+  reloadDuration: 3
+  weaponType: 2
+  pellet: 10
 --- !u!1 &6783638319895987103
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,13 +671,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389558a542efae945b7c9a78460d49e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
-  clipSize: 0
-  damege: 0
-  fireCoolTime: 0
-  spread: 0
-  recoil: 0
-  firePosDebug: {fileID: 3873580677706040738}
+  range: 10
+  clipSize: 40
+  damege: 20
+  fireCoolTime: 0.05
+  spread: 1
+  recoil: 3
+  reloadDuration: 2
+  weaponType: 3
 --- !u!1 &8916839473871256133
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,10 +776,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1383f2072ac264c88d2e0137ae9b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
-  clipSize: 0
-  damege: 0
-  fireCoolTime: 0
-  spread: 0
-  recoil: 0
-  firePosDebug: {fileID: 3873580677706040738}
+  range: 5
+  clipSize: 10
+  damege: 15
+  fireCoolTime: 0.5
+  spread: 0.5
+  recoil: 2
+  reloadDuration: 1
+  weaponType: 1

@@ -4,4 +4,10 @@ using UnityEngine;
 
 public class Bat : WeaponBase
 {
+    protected override void FireProcess()
+    {
+        base.FireProcess();
+        HitProcess();
+        FireRecoil();
+    }
 }

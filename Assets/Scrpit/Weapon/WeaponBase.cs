@@ -22,6 +22,7 @@ public class WeaponBase : MonoBehaviour
     public float spread;
     public float recoil;        //화면 흔들림 정도
     public float reloadDuration = 1.0f;
+    public WeaponType weaponType;
 
     protected int BulletCount 
     {
@@ -42,11 +43,11 @@ public class WeaponBase : MonoBehaviour
     }
     int bulletCount;
 
-    protected bool canFire = true;
-    bool isReloading = false;
-
     public Action<int> onBulletCountChange;
     public Action<float> onFire;
+
+    protected bool canFire = true;
+    bool isReloading = false;
 
     protected Transform shoulder;
     Vector2 targetDir;              //커서-중심 벡터
@@ -72,7 +73,10 @@ public class WeaponBase : MonoBehaviour
     {
         canFire = false;
         StartCoroutine(FireReady());
-        BulletCount--;
+        if (weaponType != WeaponType.Bat) 
+        {
+            BulletCount--;
+        }
     }
 
     IEnumerator FireReady() 
@@ -81,7 +85,7 @@ public class WeaponBase : MonoBehaviour
         canFire = true;
     }
 
-    protected void HitProcess ()
+    protected void HitProcess ()    //에서 벡터로 이펙트 날리기
     {
         RaycastHit2D hit2D = Physics2D.Raycast(transform.position, GetFireDirection(), range, LayerMask.GetMask("Enemy"));
         if(hit2D.collider != null) 
@@ -101,7 +105,7 @@ public class WeaponBase : MonoBehaviour
 
     public void Reload()    //앵두 납치시 사용불가
     {
-        if (!isReloading)
+        if (!isReloading && weaponType != WeaponType.Bat)
         {
             StopAllCoroutines();    //FireProcess 실행시키는 코루틴으로 isFireReady가 true되는것 방지
             isReloading = true;
@@ -110,12 +114,41 @@ public class WeaponBase : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator Reloading()   //총마다 찾을 총알 다름
+    protected IEnumerator Reloading()   //총마다 찾을 총알 다름
     {
         yield return new WaitForSeconds(reloadDuration);
         canFire = true;
-        BulletCount = clipSize;//총알 빼기
+        switch (weaponType) 
+        {
+            case WeaponType.Bat: break;
+            case WeaponType.Pistol:
+                BulletRemove(ItemCode.PistolBullet);
+                break;
+            case WeaponType.ShotGun:
+                BulletRemove(ItemCode.ShotGunBullet);
+                break;
+            case WeaponType.AssaultRifle:
+                BulletRemove(ItemCode.AssaultRifleBullet);
+                break;
+        }
         isReloading = false;
+    }
+
+    void BulletRemove(ItemCode code) 
+    {
+        Inventory inven = Inventory.Instance;
+        int needAmmo = clipSize - BulletCount;
+        int ammoCount = inven.GetItemCount(code);
+        if (ammoCount > needAmmo)
+        {
+            inven.UseItem(code, needAmmo);
+            BulletCount = clipSize;
+        }
+        else 
+        {
+            inven.UseItem(code, ammoCount);
+            BulletCount += ammoCount;
+        }
     }
 
     protected Vector2 GetFireDirection()
