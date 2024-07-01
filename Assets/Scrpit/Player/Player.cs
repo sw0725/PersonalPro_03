@@ -69,18 +69,30 @@ public class Player : MonoBehaviour
         onDie?.Invoke();
     }
 
+    void WeaponChange(WeaponType weapon) 
+    {
+        currentWeapon.UnEquip();
+        currentWeapon.gameObject.SetActive(false);
+
+        currentWeapon = weapons[(int)weapon];
+        currentWeapon.Equip();
+        currentWeapon.gameObject.SetActive(true);
+
+        onGunChange?.Invoke(currentWeapon);
+    }
+
     private void OnAttack(InputAction.CallbackContext context)      //무기 들었을때는 달리기 봉인
     {
         if (playerMove.State == PlayerMoveState.Shoot)
         {
-
+            //currentWeapon.Fire();//위치지정 필요
         }
     }
     private void OnReload(InputAction.CallbackContext context)
     {
         if (playerMove.State == PlayerMoveState.Shoot)
         {
-
+            currentWeapon.Reload();
         }
     }
 
@@ -92,26 +104,70 @@ public class Player : MonoBehaviour
 
     private void OnWeapon4(InputAction.CallbackContext context)
     {
-        if(!isAttackMode) 
+        if (!isAttackMode)
         {
-            //playerMove.State = PlayerMoveState.Shoot;
+            playerMove.OnShootMode(true);
+        }
+        else if (currentWeapon.weaponType == WeaponType.AssaultRifle)
+        {
+            isAttackMode = false;
+            playerMove.OnShootMode(false);
         }
         else 
         {
-                
+            WeaponChange(WeaponType.AssaultRifle);
         }
     }
 
     private void OnWeapon3(InputAction.CallbackContext context)
     {
+        if (!isAttackMode)
+        {
+            playerMove.OnShootMode(true);
+        }
+        else if (currentWeapon.weaponType == WeaponType.ShotGun)
+        {
+            isAttackMode = false;
+            playerMove.OnShootMode(false);
+        }
+        else
+        {
+            WeaponChange(WeaponType.ShotGun);
+        }
     }
 
     private void OnWeapon2(InputAction.CallbackContext context)
     {
+        if (!isAttackMode)
+        {
+            playerMove.OnShootMode(true);
+        }
+        else if (currentWeapon.weaponType == WeaponType.Pistol)
+        {
+            isAttackMode = false;
+            playerMove.OnShootMode(false);
+        }
+        else
+        {
+            WeaponChange(WeaponType.Pistol);
+        }
     }
 
     private void OnWeapon1(InputAction.CallbackContext context)
     {
+        if (!isAttackMode)
+        {
+            playerMove.OnShootMode(true);
+        }
+        else if (currentWeapon.weaponType == WeaponType.Bat)
+        {
+            isAttackMode = false;
+            playerMove.OnShootMode(false);
+        }
+        else
+        {
+            WeaponChange(WeaponType.Bat);
+        }
     }
 
     //입력연결==============================================

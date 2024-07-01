@@ -44,7 +44,7 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
 
     //상태=============================================
 
-    public PlayerMoveState State 
+    public PlayerMoveState State //슛상태를 없에고 대체제를 구하는게 빠를듯
     {
         get => state;
         private set 
@@ -129,15 +129,30 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
         actions.Player.Disable();
     }
 
+    public void OnShootMode(bool shootMode = true) 
+    {
+        if (shootMode) 
+        {
+            State = PlayerMoveState.Shoot;
+        }
+        else 
+        {
+            State = PlayerMoveState.Move;
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 7)                //상태 적용, 벽타기 상태에서 땅에 내려왔을때 해결하기
         {
-            if (collision.gameObject.CompareTag("Wall")) 
+            if (State != PlayerMoveState.Shoot)
             {
-                WallRay();
+                if (collision.gameObject.CompareTag("Wall"))
+                {
+                    WallRay();
+                }
+                GroundRay();
             }
-            GroundRay();
         }
     }
 
@@ -145,9 +160,12 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
     {
         if (collision.gameObject.layer == 7)
         {
-            if (collision.gameObject.CompareTag("Wall"))
+            if (State != PlayerMoveState.Shoot)
             {
-                State = PlayerMoveState.Move;
+                if (collision.gameObject.CompareTag("Wall"))
+                {
+                    State = PlayerMoveState.Move;
+                }
             }
         }
     }

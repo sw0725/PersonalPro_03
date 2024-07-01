@@ -291,9 +291,9 @@ MonoBehaviour:
   range: 0.5
   clipSize: 100
   damege: 30
-  fireCoolTime: 0.1
+  fireCoolTime: 0.2
   spread: 0
-  recoil: 1
+  recoil: 6
   reloadDuration: 0
   weaponType: 0
 --- !u!95 &6467282103728651195
@@ -570,7 +570,7 @@ MonoBehaviour:
   damege: 10
   fireCoolTime: 1
   spread: 10
-  recoil: 4
+  recoil: 7
   reloadDuration: 3
   weaponType: 2
   pellet: 10
@@ -676,7 +676,7 @@ MonoBehaviour:
   damege: 20
   fireCoolTime: 0.05
   spread: 1
-  recoil: 3
+  recoil: 2
   reloadDuration: 2
   weaponType: 3
 --- !u!1 &8916839473871256133
@@ -781,6 +781,6 @@ MonoBehaviour:
   damege: 15
   fireCoolTime: 0.5
   spread: 0.5
-  recoil: 2
+  recoil: 5
   reloadDuration: 1
   weaponType: 1
