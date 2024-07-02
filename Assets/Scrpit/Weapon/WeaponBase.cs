@@ -66,6 +66,7 @@ public class WeaponBase : MonoBehaviour
         if(canFire && BulletCount > 0) 
         {
             FireProcess();
+            Debug.Log("Fire");
         }
     }
 

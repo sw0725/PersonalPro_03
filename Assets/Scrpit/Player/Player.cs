@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
 
     public Action onDie;
     public Action OnLifeChange;
+    public Action OnAttackButton;
     public Action<WeaponBase> onGunChange;
 
     //기타=============================================
@@ -69,23 +70,45 @@ public class Player : MonoBehaviour
         onDie?.Invoke();
     }
 
-    void WeaponChange(WeaponType weapon) 
+    void WeaponChange(WeaponType? weapon) 
     {
-        currentWeapon.UnEquip();
-        currentWeapon.gameObject.SetActive(false);
+        if (weapon != null)
+        {
+            if (currentWeapon != null)
+            {
+                currentWeapon.UnEquip();
+                currentWeapon.gameObject.SetActive(false);
+            }
 
-        currentWeapon = weapons[(int)weapon];
-        currentWeapon.Equip();
-        currentWeapon.gameObject.SetActive(true);
+            currentWeapon = weapons[(int)weapon];
+            currentWeapon.Equip();
+            currentWeapon.gameObject.SetActive(true);
 
-        onGunChange?.Invoke(currentWeapon);
+            onGunChange?.Invoke(currentWeapon);
+        }
+        else 
+        {
+            currentWeapon.UnEquip();
+            currentWeapon.gameObject.SetActive(false);
+
+            currentWeapon = null;
+            onGunChange?.Invoke(currentWeapon);
+        }
+    }
+
+    public void Attack(Vector2 target, bool canfire) 
+    {
+        if(canfire)
+        {
+            currentWeapon.Fire(target);
+        }
     }
 
     private void OnAttack(InputAction.CallbackContext context)      //무기 들었을때는 달리기 봉인
     {
         if (isAttackMode)
         {
-            //currentWeapon.Fire();//위치지정 필요
+            OnAttackButton?.Invoke();
         }
     }
     private void OnReload(InputAction.CallbackContext context)
@@ -113,6 +136,7 @@ public class Player : MonoBehaviour
         {
             isAttackMode = false;
             playerMove.OnShootMode(false);
+            WeaponChange(null);
         }
         else 
         {
@@ -131,6 +155,7 @@ public class Player : MonoBehaviour
         {
             isAttackMode = false;
             playerMove.OnShootMode(false);
+            WeaponChange(null);
         }
         else
         {
@@ -149,6 +174,7 @@ public class Player : MonoBehaviour
         {
             isAttackMode = false;
             playerMove.OnShootMode(false);
+            WeaponChange(null);
         }
         else
         {
@@ -167,6 +193,7 @@ public class Player : MonoBehaviour
         {
             isAttackMode = false;
             playerMove.OnShootMode(false);
+            WeaponChange(null);
         }
         else
         {

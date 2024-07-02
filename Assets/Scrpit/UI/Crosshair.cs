@@ -17,17 +17,22 @@ public class Crosshair : MonoBehaviour
     float divPreCompute;
     float current = 0.0f;
     bool isInRange = false;
+    bool isActivate = false;
+
     Vector2 mousePos = Vector2.zero;
     Vector3 ingamePos;
 
     RectTransform[] crossRects;
     Player player;
     WeaponBase myWeapon;              //자기랑 연결된 무기 저장
+    CanvasGroup canvasGroup;
 
     readonly Vector2[] direction = { Vector2.up, Vector2.right, Vector2.down, Vector2.left };
 
     private void Awake()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
         crossRects = new RectTransform[transform.childCount-1];
         for (int i = 0; i < transform.childCount-1; i++)
         {
@@ -40,6 +45,8 @@ public class Crosshair : MonoBehaviour
     private void Start()
     {
         player = GameManager.Instance.Player;
+        player.onGunChange += TargetOnOff;
+        player.OnAttackButton += OnAttack;
 
         WeaponBase[] weapon = player.transform.GetChild(1).GetComponentsInChildren<WeaponBase>(true);
         foreach (WeaponBase weaponItem in weapon) 
@@ -48,15 +55,18 @@ public class Crosshair : MonoBehaviour
             {
                 weaponItem.onFire += Expend;
                 myWeapon = weaponItem;
-                gameObject.SetActive(false);
+                canvasGroup.alpha = 0;
             }
         }
     }
 
     private void Update()
     {
-        MousePointPos();
-        RangeCalculation();
+        if (isActivate)
+        {
+            MousePointPos();
+            RangeCalculation();
+        }
     }
 
     public void Expend(float amount)
@@ -100,10 +110,15 @@ public class Crosshair : MonoBehaviour
     void MousePointPos() 
     {
         mousePos = Input.mousePosition;
-        ingamePos = Camera.main.ScreenToWorldPoint(mousePos);
+        ingamePos = GetTargetPos();
         ingamePos.z = 0;
 
         transform.position = mousePos;
+    }
+
+    public Vector2 GetTargetPos() 
+    {
+        return Camera.main.ScreenToWorldPoint(mousePos);
     }
 
     void RangeCalculation() 
@@ -122,4 +137,23 @@ public class Crosshair : MonoBehaviour
         }
     }
     //거리계산해서 플레이어 피드백(색 바꾸기)
+
+    void TargetOnOff(WeaponBase weapon) 
+    {
+        if (weapon != myWeapon)
+        {
+            canvasGroup.alpha = 0;
+            isActivate = false;
+        }
+        else 
+        {
+            canvasGroup.alpha = 1;
+            isActivate = true;
+        }
+    }
+
+    void OnAttack() 
+    {
+        player.Attack(GetTargetPos(), isInRange);
+    }
 }

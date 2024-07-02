@@ -571,6 +571,7 @@ GameObject:
   m_Component:
   - component: {fileID: 337990075}
   - component: {fileID: 337990076}
+  - component: {fileID: 337990077}
   m_Layer: 5
   m_Name: Bat
   m_TagString: Untagged
@@ -659,6 +660,18 @@ MonoBehaviour:
   maxExpend: 100
   recorveryDuration: 0.4
   type: 0
+--- !u!225 &337990077
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337990074}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &346126788
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,6 +682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 346126789}
   - component: {fileID: 346126790}
+  - component: {fileID: 346126791}
   m_Layer: 5
   m_Name: Pistol
   m_TagString: Untagged
@@ -757,6 +771,18 @@ MonoBehaviour:
   maxExpend: 100
   recorveryDuration: 1
   type: 0
+--- !u!225 &346126791
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346126788}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &444873982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,6 +1397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 694076527}
   - component: {fileID: 694076528}
+  - component: {fileID: 694076529}
   m_Layer: 5
   m_Name: AR
   m_TagString: Untagged
@@ -1459,6 +1486,18 @@ MonoBehaviour:
   maxExpend: 100
   recorveryDuration: 0.4
   type: 0
+--- !u!225 &694076529
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694076526}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &716448915
 GameObject:
   m_ObjectHideFlags: 0
@@ -3375,6 +3414,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2110560433}
   - component: {fileID: 2110560434}
+  - component: {fileID: 2110560435}
   m_Layer: 5
   m_Name: ShotGun
   m_TagString: Untagged
@@ -3463,6 +3503,18 @@ MonoBehaviour:
   maxExpend: 100
   recorveryDuration: 1.2
   type: 0
+--- !u!225 &2110560435
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110560432}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2121325107
 GameObject:
   m_ObjectHideFlags: 0
