@@ -83,14 +83,14 @@ public class Player : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)      //무기 들었을때는 달리기 봉인
     {
-        if (playerMove.State == PlayerMoveState.Shoot)
+        if (isAttackMode)
         {
             //currentWeapon.Fire();//위치지정 필요
         }
     }
     private void OnReload(InputAction.CallbackContext context)
     {
-        if (playerMove.State == PlayerMoveState.Shoot)
+        if (isAttackMode)
         {
             currentWeapon.Reload();
         }
@@ -106,6 +106,7 @@ public class Player : MonoBehaviour
     {
         if (!isAttackMode)
         {
+            isAttackMode = true;
             playerMove.OnShootMode(true);
         }
         else if (currentWeapon.weaponType == WeaponType.AssaultRifle)
@@ -123,6 +124,7 @@ public class Player : MonoBehaviour
     {
         if (!isAttackMode)
         {
+            isAttackMode = true;
             playerMove.OnShootMode(true);
         }
         else if (currentWeapon.weaponType == WeaponType.ShotGun)
@@ -140,6 +142,7 @@ public class Player : MonoBehaviour
     {
         if (!isAttackMode)
         {
+            isAttackMode = true;
             playerMove.OnShootMode(true);
         }
         else if (currentWeapon.weaponType == WeaponType.Pistol)
@@ -157,6 +160,7 @@ public class Player : MonoBehaviour
     {
         if (!isAttackMode)
         {
+            isAttackMode = true;
             playerMove.OnShootMode(true);
         }
         else if (currentWeapon.weaponType == WeaponType.Bat)

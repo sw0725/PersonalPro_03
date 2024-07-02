@@ -10,7 +10,6 @@ public enum PlayerMoveState : byte
     Move = 0,
     Wall,
     Vaine,
-    Shoot,
     Dead,
 }
 
@@ -44,7 +43,7 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
 
     //상태=============================================
 
-    public PlayerMoveState State //슛상태를 없에고 대체제를 구하는게 빠를듯
+    public PlayerMoveState State //슛상태를 없앰 =>상태구현 필요
     {
         get => state;
         private set 
@@ -61,6 +60,7 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
     PlayerMoveState state = PlayerMoveState.Move;
 
     bool isVaineAble = false;
+    bool isOnShootMode = false;
     //기타=============================================
 
     public Rigidbody2D rb2;     //디버그용
@@ -131,28 +131,18 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
 
     public void OnShootMode(bool shootMode = true) 
     {
-        if (shootMode) 
-        {
-            State = PlayerMoveState.Shoot;
-        }
-        else 
-        {
-            State = PlayerMoveState.Move;
-        }
+        isOnShootMode = shootMode;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 7)                //상태 적용, 벽타기 상태에서 땅에 내려왔을때 해결하기
         {
-            if (State != PlayerMoveState.Shoot)
+            if (collision.gameObject.CompareTag("Wall") && !isOnShootMode)
             {
-                if (collision.gameObject.CompareTag("Wall"))
-                {
-                    WallRay();
-                }
-                GroundRay();
+                WallRay();
             }
+            GroundRay();
         }
     }
 
@@ -160,12 +150,9 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
     {
         if (collision.gameObject.layer == 7)
         {
-            if (State != PlayerMoveState.Shoot)
+            if (collision.gameObject.CompareTag("Wall"))
             {
-                if (collision.gameObject.CompareTag("Wall"))
-                {
-                    State = PlayerMoveState.Move;
-                }
+                State = PlayerMoveState.Move;
             }
         }
     }
@@ -176,6 +163,15 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
         if (hit2D.collider != null)
         {
             isJumping = false;
+            if (Keyboard.current.aKey.isPressed)
+            {
+                inputDir = Vector2.left;
+            }
+            else if (Keyboard.current.dKey.isPressed)
+            {
+                inputDir = Vector2.right;
+            }
+
             if (jumpKey)
             {
                 Jump();
@@ -235,8 +231,6 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
                 rb.velocity = Vector2.zero;
                 rb.gravityScale = ZeroGravity;
                 break;
-            case PlayerMoveState.Shoot:
-                break;
             case PlayerMoveState.Dead: 
                 break;
         }
@@ -247,14 +241,13 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
         switch (state)
         {
             case PlayerMoveState.Move:
+                inputDir = Vector2.zero;
                 break;
             case PlayerMoveState.Wall:
                 rb.gravityScale = NormalGravity;
                 break;
             case PlayerMoveState.Vaine:
                 rb.gravityScale = NormalGravity;
-                break;
-            case PlayerMoveState.Shoot:
                 break;
             case PlayerMoveState.Dead:
                 break;
@@ -306,9 +299,9 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
             }
         }
     }
-    private void OnRun(InputAction.CallbackContext context)     //Shoot시에 작동 안함
+    private void OnRun(InputAction.CallbackContext context)
     {
-        if (State != PlayerMoveState.Shoot)
+        if (!isOnShootMode)
         {
             if (context.canceled)
             {
@@ -320,7 +313,7 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
             }
         }
     }
-    private void OnJump(InputAction.CallbackContext context)    //Vaine, Wall시에 다르게 점프, 무기들었을때 점프 봉인
+    private void OnJump(InputAction.CallbackContext context)    //Vaine, Wall시에 다르게 점프
     {
         if (State == PlayerMoveState.Wall)
         {
@@ -408,9 +401,9 @@ public class PlayerMove : MonoBehaviour                             //파밍스테이
         rb.AddForce(wallJumpPower * Vector2.up, ForceMode2D.Impulse);
         jumpDir = Vector2.zero;
     }
-    private void OnVaine(InputAction.CallbackContext context)
+    private void OnVaine(InputAction.CallbackContext context)       //슛모드에선 불가
     {
-        if (isVaineAble) 
+        if (isVaineAble && !isOnShootMode) 
         {
             State = PlayerMoveState.Vaine;
             transform.position = new(vainePos.x, transform.position.y);

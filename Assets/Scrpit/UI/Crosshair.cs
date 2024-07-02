@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +16,13 @@ public class Crosshair : MonoBehaviour
 
     float divPreCompute;
     float current = 0.0f;
+    bool isInRange = false;
+    Vector2 mousePos = Vector2.zero;
+    Vector3 ingamePos;
 
     RectTransform[] crossRects;
+    Player player;
+    WeaponBase myWeapon;              //자기랑 연결된 무기 저장
 
     readonly Vector2[] direction = { Vector2.up, Vector2.right, Vector2.down, Vector2.left };
 
@@ -33,7 +39,7 @@ public class Crosshair : MonoBehaviour
 
     private void Start()
     {
-        Player player = GameManager.Instance.Player;
+        player = GameManager.Instance.Player;
 
         WeaponBase[] weapon = player.transform.GetChild(1).GetComponentsInChildren<WeaponBase>(true);
         foreach (WeaponBase weaponItem in weapon) 
@@ -41,9 +47,16 @@ public class Crosshair : MonoBehaviour
             if (weaponItem.weaponType == type) 
             {
                 weaponItem.onFire += Expend;
+                myWeapon = weaponItem;
                 gameObject.SetActive(false);
             }
         }
+    }
+
+    private void Update()
+    {
+        MousePointPos();
+        RangeCalculation();
     }
 
     public void Expend(float amount)
@@ -83,4 +96,30 @@ public class Crosshair : MonoBehaviour
 
         current = 0;
     }
+
+    void MousePointPos() 
+    {
+        mousePos = Input.mousePosition;
+        ingamePos = Camera.main.ScreenToWorldPoint(mousePos);
+        ingamePos.z = 0;
+
+        transform.position = mousePos;
+    }
+
+    void RangeCalculation() 
+    {
+        Vector2 dir = (player.transform.position - ingamePos).normalized;
+        RaycastHit2D hit2D = Physics2D.Raycast(ingamePos, dir, myWeapon.range, LayerMask.GetMask("Player"));
+        if (hit2D.collider != null)
+        {
+            Debug.Log("in");
+            isInRange = true;
+        }
+        else 
+        {
+            Debug.Log("Out");
+            isInRange = false;
+        }
+    }
+    //거리계산해서 플레이어 피드백(색 바꾸기)
 }
